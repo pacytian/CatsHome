@@ -65,7 +65,7 @@ public class LevelRandom : MonoBehaviour
     void BulidTrialElement(){
         pref = Instantiate(trial) as GameObject;
         pref.transform.parent = this.transform;
-        pref.transform.localPosition = new Vector3(0.0f,4.0f,-3.0f);
+        pref.transform.localPosition = new Vector3(0.0f,5.0f,-3.0f);
     }
 
     

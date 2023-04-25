@@ -22,7 +22,7 @@ public class ElementTrial : MonoBehaviour
             timer -= Time.deltaTime;
         }
         else{
-            transform.Translate(Vector3.down * Time.deltaTime * bgspeed * 3);
+            transform.Translate(Vector3.down * Time.deltaTime * bgspeed * 6);
         }
         if (transform.position.y < -3){
             Destroy(gameObject);
