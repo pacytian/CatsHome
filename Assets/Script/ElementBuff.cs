@@ -5,7 +5,6 @@ using UnityEngine;
 public class ElementBuff : MonoBehaviour
 {
     float bgspeed = 0.1f;
-    public SmallCat cat;
     VM vm;
 
     void Start()
@@ -24,10 +23,10 @@ public class ElementBuff : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Element")){
-            Destroy(other);
+            Destroy(other.gameObject);
         }
         PlayerController player = other.GetComponent<PlayerController>();
-        cat = other.GetComponent<SmallCat>();
+        SmallCat cat = other.GetComponent<SmallCat>();
         if (player != null || cat != null){
             if (player == null){
                 player = other.transform.parent.parent.GetComponent<PlayerController>();

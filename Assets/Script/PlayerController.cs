@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("movey",0);
         strength = vm.StrengthMax;
         pressure = 0;
-        invincibaletimer = vm.InvincibaleTime;
-        bufftimer = vm.BuffTime;
+        invincibaletimer = 0;
+        bufftimer = 0;
     }
 
     void Update()
@@ -173,6 +173,12 @@ public class PlayerController : MonoBehaviour
         SetValueOfPressure(pressure);
         //Debug.Log("CurrentPressure: " + pressure + "/" + pressure);
     }
+
+
+    public void ChangePressureOnce(float num){
+        pressure = pressure + num;
+        SetValueOfPressure(pressure);
+    }
     
     // 传参到ChangeStrength.cs
     void SetValueOfStrength(float Strength){
@@ -182,7 +188,7 @@ public class PlayerController : MonoBehaviour
     // 传参到ChangePressure.cs,IsGameOver.cs,Warning.cs
     void SetValueOfPressure(float value){
         Pressure.GetComponent<ChangePressure>().SendMessage("GetValueOfPressure",value);
-        this.transform.parent.gameObject.GetComponent<IsGameOver>().SendMessage("GetValueOfIGO",value);
+        //this.transform.parent.gameObject.GetComponent<IsGameOver>().SendMessage("GetValueOfIGO",value);
         Warning.GetComponent<Warning>().SendMessage("GetValueOfW",value);
     }
     

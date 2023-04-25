@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementCat : MonoBehaviour
+public class ElementExplore : MonoBehaviour
 {
     float bgspeed = 0.1f;
-    public Sprite[] cats;
+    float value;
     VM vm;
-    
-    void Start(){
+    public bool isbigprize = false;
+    void Start()
+    {
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
-        int i = Random.Range(0,8);
-        GetComponent<SpriteRenderer>().sprite = cats[i];
     }
+
     void Update()
     {
         bgspeed = vm.BGFrontSpeed;
@@ -21,7 +21,6 @@ public class ElementCat : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Element")){
             Destroy(other.gameObject);
@@ -32,12 +31,13 @@ public class ElementCat : MonoBehaviour
             if (player == null){
             player = other.transform.parent.parent.GetComponent<PlayerController>();
             }
-            player.SendMessage("GetValueOfB",true);
-            player.transform.Find("SmallCat").GetComponent<SmallCatController>().ChangeCat(this.gameObject);
+            if(isbigprize){
+                player.ChangePressureOnce(vm.PressureMax * -1);
+            }
             Destroy(gameObject);
         }
         else{
             return;
         }
-    } 
+    }
 }

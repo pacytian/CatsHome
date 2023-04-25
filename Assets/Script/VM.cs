@@ -17,19 +17,26 @@ public class VM : MonoBehaviour
     [ReadOnly] public float Pressure;//压力
     public float PressureIncrease;//压力增长值
     public float InvincibaleTime;//无敌时长
-    [ReadOnly] public float InvincibaleTimer;//无敌计时器
+    [ReadOnly] public float InvincibaleTimer;//无敌倒计时器
     public float FlashSpeed;//警告闪烁速度
     public float RotateSpeed;//小猫旋转速度
-    public float BuffTime;
-    public float BuffSpeed;
-    [ReadOnly] public float BuffTimer;
-    public float RandomBulidTime;
+    public float BuffTime;//Buff时长
+    public float BuffSpeed;//Buff期间的移动速度
+    [ReadOnly] public float BuffTimer;//Buff倒计时器
+    public float RandomBulidTime;//元素自动生成的时间
     [ReadOnly] public int PriceNum;//血瓶数量
-    public float PriceValue;
+    public float PriceValue;//血瓶数值
+    [ReadOnly] public GameObject[] Bottle = new GameObject[3];
+    public float HorizontalSpeed;//元素横向移动的速度
+    public float TrialValue;
+
 
     void Start()
     {
         //vm = GameObject.Find("ValueManager").GetComponent<VM>();
+        Bottle [0] = transform.Find("bottle0").gameObject;
+        Bottle [1] = transform.Find("bottle1").gameObject;
+        Bottle [2] = transform.Find("bottle2").gameObject;
     }
 
 

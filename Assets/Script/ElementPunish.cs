@@ -21,7 +21,7 @@ public class ElementPunish : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Element")){
-            Destroy(other);
+            Destroy(other.gameObject);
         }
         PlayerController player = other.GetComponent<PlayerController>();
         SmallCat cat = other.GetComponent<SmallCat>();

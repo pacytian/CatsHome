@@ -21,32 +21,37 @@ public class IsGameOver : MonoBehaviour
 
     void Update()
     {
+        pressure = player.pressure;
         pressuremax = vm.PressureMax;
-        if (pressure == pressuremax && isgameover == false){
+        if (pressure >= pressuremax && isgameover == false){
             value = vm.PriceValue;
             if (vm.PriceNum == 3){
-                Debug.Log("A");
-                Debug.Log(value * -1);
-                player.ChangePressure(value * -2);
                 vm.PriceNum --;
+                player.ChangePressureOnce(value * -1);
+                vm.Bottle[vm.PriceNum].transform.GetChild (0).gameObject.SetActive(true);
+                vm.Bottle[vm.PriceNum].transform.GetChild (1).gameObject.SetActive(false);
+                Debug.Log("A");
                 return;
             }
             else if (vm.PriceNum == 2){
                 Debug.Log("B");
-                player.ChangePressure(value * -2);
                 vm.PriceNum --;
+                player.ChangePressureOnce(value * -1);
+                vm.Bottle[vm.PriceNum].transform.GetChild (0).gameObject.SetActive(true);
+                vm.Bottle[vm.PriceNum].transform.GetChild (1).gameObject.SetActive(false);
                 return;
             }
             else if(vm.PriceNum == 1){
                 Debug.Log("C");
-                Debug.Log(value * -2);
-                player.ChangePressure(value * -2);
                 vm.PriceNum --;
+                player.ChangePressureOnce(value * -1);
+                vm.Bottle[vm.PriceNum].transform.GetChild (0).gameObject.SetActive(true);
+                vm.Bottle[vm.PriceNum].transform.GetChild (1).gameObject.SetActive(false);
                 return;
             }
             else{
-                Debug.Log("D");
-                //GameOver();
+                Debug.Log("GameOver");
+                GameOver();
             }
         }
     }

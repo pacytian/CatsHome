@@ -26,13 +26,13 @@ public class ElementFuel : MonoBehaviour
                 value = -40;
                 break;
             case FuelType.Fuel3:
-                value = -100;
+                value = -60;
                 break;
             case FuelType.Fuel4:
                 value = 0;
                 break;
             case FuelType.FuelMax:
-                value = -200;
+                value = -100;
                 break;
         } 
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
@@ -57,7 +57,7 @@ public class ElementFuel : MonoBehaviour
                 player = other.transform.parent.parent.GetComponent<PlayerController>();
             }   
             if (player.pressure > 0){
-                player.ChangePressure(value);
+                player.ChangePressureOnce(value);
                 Destroy(gameObject);
             }
             else{

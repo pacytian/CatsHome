@@ -10,6 +10,7 @@ public class ElementPrice : MonoBehaviour
     void Start()
     {
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
+
     }
     void Update()
     {
@@ -23,7 +24,7 @@ public class ElementPrice : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         value = vm.PriceValue;
         if (other.CompareTag("Element")){
-            Destroy(other);
+            Destroy(other.gameObject);
         }
         PlayerController player = other.GetComponent<PlayerController>();
         SmallCat cat = other.GetComponent<SmallCat>();
@@ -31,9 +32,16 @@ public class ElementPrice : MonoBehaviour
             if (player == null){
             player = other.transform.parent.parent.GetComponent<PlayerController>();
             }
-            player.ChangePressure(value/2);
-            vm.PriceNum = Mathf.Clamp(vm.PriceNum + 1,0,3);
-            Destroy(gameObject);
+            if (vm.PriceNum < 3){
+                player.ChangePressureOnce(value);
+                vm.Bottle[vm.PriceNum].transform.GetChild (1).gameObject.SetActive(true);
+                vm.Bottle[vm.PriceNum].transform.GetChild (0).gameObject.SetActive(false);
+                vm.PriceNum = Mathf.Clamp(vm.PriceNum + 1,0,3);
+                Destroy(gameObject);
+            }
+            else{
+                Debug.Log("Bottle is already full");
+            }
         }
         else{
             return;

@@ -6,7 +6,7 @@ public class SmallCat : MonoBehaviour
 {
     Transform center;
     float dis =0.5f;
-    float progress = 0;
+    public float progress = 0;
     VM vm;
     float rotatespeed;
     
@@ -26,8 +26,8 @@ public class SmallCat : MonoBehaviour
         if(progress >= 360){
             progress -= 360;
         }
-        float x1 = center.position.x + dis * Mathf.Cos(progress);
-        float y1 = center.position.y + dis * Mathf.Sin(progress);
+        float x1 = center.position.x + dis * Mathf.Cos(progress * Mathf.Deg2Rad);
+        float y1 = center.position.y + dis * Mathf.Sin(progress * Mathf.Deg2Rad);
         this.transform.position = new Vector3(x1,y1,-5);
     }
 }
