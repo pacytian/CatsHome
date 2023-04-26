@@ -28,9 +28,14 @@ public class VM : MonoBehaviour
     public float PriceValue;//血瓶数值
     [ReadOnly] public GameObject[] Bottle = new GameObject[3];
     public float HorizontalSpeed;//元素横向移动的速度
-    public float TrialValue;
+    public float TrialValue;//考验的数值
+    public float DeadDisappearTime;
 
 
+    void Awake() {
+        Application.targetFrameRate = 120;        
+    }
+    
     void Start()
     {
         //vm = GameObject.Find("ValueManager").GetComponent<VM>();

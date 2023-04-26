@@ -119,12 +119,12 @@ public class PlayerController : MonoBehaviour
         }
         else {
                 if (!isoverheat){
-                if (strength - val <= 0){
+                if (strength <= 0){
                     isoverheat = true;
                     return false;
                 }
                 else{
-                    strength -= val * Time.timeScale;
+                    strength -= val * Time.deltaTime * 30;
                     return true;
                 }
             }

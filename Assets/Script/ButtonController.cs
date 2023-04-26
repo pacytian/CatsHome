@@ -34,7 +34,7 @@ public class ButtonController : MonoBehaviour
     public void ButtonRestart(){
         player = GameObject.Find("Controller").transform.Find("Player").gameObject;
         player.transform.position = new Vector3(0,-1.489f,-5);
-        UnActiveAllChildren(player.transform.Find("SmallCat").gameObject);
+        UnActiveAllChildrenSP(player.transform.Find("SmallCat").gameObject);
         element = GameObject.Find("Element");
         RemoveAllChildren(element);
         player.GetComponent<PlayerController>().Init();
@@ -54,13 +54,13 @@ public class ButtonController : MonoBehaviour
                 GameObject.Destroy(transform.gameObject);
             }
         }
-    void UnActiveAllChildren(GameObject parent)
+    void UnActiveAllChildrenSP(GameObject parent)
         {
             Transform transform;
             for(int i = 0;i < parent.transform.childCount; i++)
             {
                 transform = parent.transform.GetChild(i);
-                transform.gameObject.SetActive(false);
+                transform.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             }
         }    
 }
