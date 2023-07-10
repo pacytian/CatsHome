@@ -5,7 +5,7 @@ using UnityEngine;
 public class SmallCat : MonoBehaviour
 {
     Transform center;
-    float dis =0.5f;
+    float dis =0.6f;
     public float progress = 0;
     VM vm;
     float rotatespeed;
@@ -21,7 +21,7 @@ public class SmallCat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //rotatespeed = vm.RotateSpeed;
+        rotatespeed = vm.RotateSpeed;
         progress += Time.deltaTime * rotatespeed;
         if(progress >= 360){
             progress -= 360;

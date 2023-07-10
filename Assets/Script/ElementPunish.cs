@@ -29,7 +29,9 @@ public class ElementPunish : MonoBehaviour
             if (player == null){            
                 player = other.transform.parent.parent.GetComponent<PlayerController>();
             }
+            vm.GetComponent<AudioEffect>().Punish();
             player.transform.Find("SmallCat").GetComponent<SmallCatController>().DestroyCat();
+            GameObject.Find("ScoreManager").GetComponent<ScoreManager>().SendMessage("GetValueOfS","punish");
             Destroy(gameObject);
         }
         else{

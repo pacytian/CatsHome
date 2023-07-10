@@ -34,9 +34,13 @@ public class ElementPrice : MonoBehaviour
             }
             if (vm.PriceNum < 3){
                 player.ChangePressureOnce(value);
+                vm.GetComponent<AudioEffect>().Price();
                 vm.Bottle[vm.PriceNum].transform.GetChild (1).gameObject.SetActive(true);
                 vm.Bottle[vm.PriceNum].transform.GetChild (0).gameObject.SetActive(false);
-                vm.PriceNum = Mathf.Clamp(vm.PriceNum + 1,0,3);
+                if (vm.Pressure + value <vm.PressureMax){
+                    vm.PriceNum = Mathf.Clamp(vm.PriceNum + 1,0,3);
+                }
+                GameObject.Find("ScoreManager").GetComponent<ScoreManager>().SendMessage("GetValueOfS","price");
                 Destroy(gameObject);
             }
             else{

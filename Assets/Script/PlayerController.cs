@@ -15,36 +15,46 @@ public class PlayerController : MonoBehaviour
     float strengthrevoverstep;
     bool isstrengthrecoverable = false;
     bool isoverheat = false;
-    private Animator ani;
+    public Animator ani;
     private Rigidbody2D rbody;
     float pressuremax;
     [ReadOnly] public float pressure;
     float pressurestep;
-    bool isinvincible = false;
+    [ReadOnly] public bool isinvincible = false;
     [ReadOnly] public float invincibaletimer;
     float invincibaletime;
     float bufftime;
     float buffspeed;
     [ReadOnly] public float bufftimer;
-    bool isbuff = false;
+    [ReadOnly] public bool isbuff = false;
+    bool candash = true;
     SpriteRenderer spS;
     SpriteRenderer spB;
     public GameObject Pressure;
     public GameObject Warning;
+    public SpriteRenderer Playercat;
+    public GameObject[] dash = new GameObject[2];
+    public Sprite[] spcat;
+    GameObject Strength;
+    public GameObject bgg;
     
     void Start()
     {
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
-        ani = GetComponent<Animator>();
+        //ani = GetComponent<Animator>();
         rbody = GetComponent<Rigidbody2D>();
         ani.SetFloat("movex",0);
         ani.SetFloat("movey",0);
         strength = vm.StrengthMax;
         pressure = 0;
-        invincibaletimer = vm.InvincibaleTime;
+        //invincibaletimer = vm.InvincibaleTime;
         bufftimer = vm.BuffTime;
+        isinvincible = true;
+        isbuff = false;
+        invincibaletimer = 1.5f;
         spS = this.transform.Find("Invincibale").gameObject.GetComponent<SpriteRenderer>();
         spB = this.transform.Find("Buff").gameObject.GetComponent<SpriteRenderer>();
+        Strength = this.transform.Find("Strength").gameObject;
     }
 
     public void Init(){
@@ -52,12 +62,27 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("movey",0);
         strength = vm.StrengthMax;
         pressure = 0;
-        invincibaletimer = 0;
-        bufftimer = 0;
+        isinvincible = true;
+        isbuff = false;
+        invincibaletimer = 1.5f;
+        bufftimer = vm.BuffTime;
+        SetValueOfStrength(strength);
+        SetValueOfPressure(pressure);
     }
 
     void Update()
     {
+        if (vm.CatBreed == 9){
+            bgg.SetActive(true);
+            if(pressure < 25){
+                pressure = 25;
+                SetValueOfPressure(pressure);
+            }
+        }
+        else{
+            bgg.SetActive(false);
+        }
+
         if (!isbuff){
             movespeed = vm.MoveSpeed;
         }
@@ -86,8 +111,9 @@ public class PlayerController : MonoBehaviour
             }
 
             if (dir.magnitude != 0 && IsStrengthEnough(moveconsume) && !isoverheat){
+            //if (dir.magnitude != 0 && !isoverheat){
                 IsMove();
-            }
+            } 
             else{
                 IsIdle();
             };
@@ -118,9 +144,9 @@ public class PlayerController : MonoBehaviour
             return true;
         }
         else {
-                if (!isoverheat){
+            if (!isoverheat){
                 if (strength <= 0){
-                    isoverheat = true;
+                    //isoverheat = true;
                     return false;
                 }
                 else{
@@ -140,9 +166,11 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("movey",0);
         rbody.velocity = new Vector2(0,0);
         isstrengthrecoverable = true;
+        Playercat.sprite = spcat[1];
+        Playercat.flipX = false;
     }
     
-    //有输入且无Buff状态下移动不回能量
+    //有输入且无Buff状态下移动/冲刺，不回能量
     void IsMove(){
         if (Time.timeScale == 0){
             return;
@@ -150,18 +178,65 @@ public class PlayerController : MonoBehaviour
         if (movex != 0){
             ani.SetFloat("movex",movex);
             ani.SetFloat("movey",0);
+            if (movex > 0){
+                Playercat.sprite = spcat[0];
+                Playercat.flipX = true;
+            }
+            else{   
+                Playercat.sprite = spcat[0];
+                Playercat.flipX = false;
+            }
         }
         if (movey != 0){
             ani.SetFloat("movey",movey);
             ani.SetFloat("movex",0);
+            Playercat.sprite = spcat[1];
+            Playercat.flipX = false;
         }
         if (!isbuff){
-            isstrengthrecoverable = false;
+            //isstrengthrecoverable = false;
         }
+        /*if (Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift)){
+            if (IsStrengthEnough(moveconsume)){
+                rbody.velocity = dir * buffspeed * Time.deltaTime * 30;
+            }
+        }
+        else{
+            rbody.velocity = dir * movespeed * Time.deltaTime * 30;
+        }*/
         rbody.velocity = dir * movespeed * Time.deltaTime * 30;
+        if (Input.GetKeyDown(KeyCode.Space)){
+            if(isbuff){
+                rbody.position = dir * 0.6f + rbody.position;
+                if (movex > 0){
+                    dash[1].SetActive(true);
+                }
+                else{   
+                    dash[0].SetActive(true);
+                }
+            }
+            else if (strength - vm.DashCost >= 0){
+                strength -= vm.DashCost;
+                rbody.position = dir * 0.6f + rbody.position;
+                if (movex > 0){
+                    dash[1].SetActive(true);
+                }
+                else{   
+                    dash[0].SetActive(true);
+                }
+            }
+        }
         rbody.position = new Vector3(Mathf.Clamp(rbody.position.x, -1.2f, 1.2f),Mathf.Clamp(rbody.position.y ,-2.1f, 2.1f),-5);
+        if (rbody.position.x < -0.65){
+            Strength.transform.localPosition = new Vector3(2.5f,-0.3f,-1);
+        }
+        else{
+            Strength.transform.localPosition = new Vector3(-2.5f,-0.3f,-1);
+        }
     }
     
+
+
     //压力值（燃料）变化
     public void ChangePressure(float num){
         if (num > 0){
@@ -194,7 +269,9 @@ public class PlayerController : MonoBehaviour
     
     //接收无敌状态变化
     void GetValueOfI(bool value){
-        isinvincible = value;
+        if (pressure < pressuremax){
+            isinvincible = value;
+        }
 
     }
 
@@ -233,7 +310,7 @@ public class PlayerController : MonoBehaviour
         }
         bufftimer -= Time.deltaTime;
         if (bufftimer < 1 && bufftimer > 0){
-            float remainder = invincibaletimer % 0.2f;
+            float remainder = bufftimer % 0.2f;
 		    spB.enabled = remainder > 0.1f;
         }
         Debug.Log("Your obtain the buff");

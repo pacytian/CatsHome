@@ -31,7 +31,9 @@ public class ElementBonus : MonoBehaviour
                 if (player == null){
                     player = other.transform.parent.parent.GetComponent<PlayerController>();
                 }
+                vm.GetComponent<AudioEffect>().Buff();
                 player.SendMessage("GetValueOfI",true);
+                GameObject.Find("ScoreManager").GetComponent<ScoreManager>().SendMessage("GetValueOfS","bonus");
                 Destroy(gameObject);
             }
         else{

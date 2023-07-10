@@ -31,7 +31,7 @@ public class ChangeStrength : MonoBehaviour
         strengthmax = vm.StrengthMax;
         //Debug.Log(colorgreen + "   " + strengthmax);
         sp.color = new Color(spcolor.r,Remap(colorgreen,0.0f,strengthmax,0.0f,1.0f),spcolor.b,spcolor.a);
-        pos.y = Remap(colorgreen,0.0f,strengthmax,-1.5f,0.0f);
+        pos.y = Remap(colorgreen,0.0f,strengthmax,-1.0f,0.0f);
         colortrans.localPosition = pos;
     }
 

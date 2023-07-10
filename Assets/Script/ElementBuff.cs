@@ -30,8 +30,10 @@ public class ElementBuff : MonoBehaviour
         if (player != null || cat != null){
             if (player == null){
                 player = other.transform.parent.parent.GetComponent<PlayerController>();
-            }   
+            }
+            vm.GetComponent<AudioEffect>().Buff();
             player.SendMessage("GetValueOfB",true);
+            GameObject.Find("ScoreManager").GetComponent<ScoreManager>().SendMessage("GetValueOfS","buff");
             Destroy(gameObject);
         }
         else{

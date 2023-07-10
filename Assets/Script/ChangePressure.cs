@@ -11,6 +11,7 @@ public class ChangePressure : MonoBehaviour
     float pressuremax = 100;
     Transform colortrans;
     Vector3 pos;
+    public GameObject bgg;
 
     void Start()
     {
@@ -27,8 +28,8 @@ public class ChangePressure : MonoBehaviour
         pos = colortrans.localPosition;
         pressuremax = vm.PressureMax;
         //Debug.Log(colorgreen + "   " + strengthmax);
-        sp.color = new Color(spcolor.r,spcolor.g,Remap(pressure,0.0f,pressuremax,1.0f,0.0f),spcolor.a);
-        pos.y = Remap(pressure,0.0f,pressuremax,-0.5f,0.0f);
+        sp.color = new Color(spcolor.r,Remap(pressure,0.0f,pressuremax,1.0f,0.0f),spcolor.b,spcolor.a);
+        pos.x = Remap(pressure,0.0f,pressuremax,-4.4f,0.0f);
         colortrans.localPosition = pos;
     }
     

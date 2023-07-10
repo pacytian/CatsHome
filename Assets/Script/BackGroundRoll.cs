@@ -10,10 +10,8 @@ public class BackGroundRoll : MonoBehaviour
     GameObject bg4;
     GameObject bgnow1;
     GameObject bgnow2;
-    GameObject swap;
-    float speed = 0.1f;
-    int switchcounter = -1;
-    int switchcountermax = 2;
+    float speed;
+    public int switchcounter = 0;
     VM vm;
     Vector3 startPosition;
     Vector3 endPosition;
@@ -32,38 +30,51 @@ public class BackGroundRoll : MonoBehaviour
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
     }
 
+    public void BGInit(){
+        bg1.transform.position = startPosition;
+        bg2.transform.position = endPosition;
+        bg1.SetActive(true);
+        bg2.SetActive(true);
+        bg3.SetActive(false);
+        bg4.SetActive(false);
+        bg3.transform.position = endPosition;
+        bg4.transform.position = endPosition;
+        switchcounter = 0;
+        bgnow1 = bg1;
+        bgnow2 = bg2;
+    }
+    
     void Update()
     {
         speed = vm.BGSpeed;
-        switchcountermax = vm.BGSwitchMax;
-        bgnow1.transform.Translate(Vector3.down * Time.deltaTime * speed, Space.World);
         bgnow2.transform.Translate(Vector3.down * Time.deltaTime * speed, Space.World);
+        bgnow1.transform.Translate(Vector3.down * Time.deltaTime * speed, Space.World);
         if (bgnow2.transform.position.y < startPosition.y)
         {
             bgnow1.transform.position = endPosition;
-            swap = bgnow1;
             bgnow1 = bgnow2;
-            bgnow2 = swap;
-            switchcounter ++;
-            if (switchcounter == switchcountermax - 1){
-                bg2.SetActive(false);
-                bg4.SetActive(true);
-                bgnow2 = bg4;
-            }
-            else if (switchcounter == switchcountermax){
+            if (switchcounter == 0){
                 bg1.SetActive(false);
                 bg3.SetActive(true);
                 bgnow2 = bg3;
+                switchcounter ++;
             }
-            else if (switchcounter == switchcountermax * 2 - 1){
-                bg4.SetActive(false);
-                bg2.SetActive(true);
-                bgnow2 = bg2;
+            else if (switchcounter == 1){
+                bg2.SetActive(false);
+                bg4.SetActive(true);
+                bgnow2 = bg4;
+                switchcounter ++;
             }
-            else if (switchcounter == switchcountermax * 2){
+            else if (switchcounter == 2){
                 bg3.SetActive(false);
                 bg1.SetActive(true);
                 bgnow2 = bg1;
+                switchcounter ++;
+            }
+            else if (switchcounter == 3){
+                bg4.SetActive(false);
+                bg2.SetActive(true);
+                bgnow2 = bg2;
                 switchcounter = 0;
             }
          //Debug.Log(switchcounter);

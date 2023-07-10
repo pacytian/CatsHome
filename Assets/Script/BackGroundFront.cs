@@ -7,7 +7,7 @@ public class BackGroundFront : MonoBehaviour
     VM vm;
     float bgfrontspeed = 0.1f;
     Renderer rend;
-    float y = 0;
+    public float y = 0;
     void Start()
     {
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
@@ -17,7 +17,7 @@ public class BackGroundFront : MonoBehaviour
     
     void Update()
     {
-        bgfrontspeed = vm.BGFrontSpeed;
+        bgfrontspeed = vm.BGFrontSpeed * 6 / 5.04f;
         //float y = Mathf.Repeat(Time.time * bgfrontspeed,1);
         y = Mathf.Repeat(Time.deltaTime * bgfrontspeed + y,1);
         rend.material.mainTextureOffset = new Vector2(0,y);

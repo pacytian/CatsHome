@@ -14,15 +14,16 @@ public class SmallCatController : MonoBehaviour
     
     //SpriteRenderer sp2;
     public SpriteRenderer[] sp;
-    float pressureplus = 0.5f;
+    public DeadPunishment dp;
+    float pressureplus = 0.3f;
     //SpriteRenderer sp3;
     void Start()
     {
         //sp1 = transform.Find("Cat1").GetComponent<SpriteRenderer>();
         //sp2 = transform.Find("Cat2").GetComponent<SpriteRenderer>();
         //sp3 = transform.Find("Cat3").GetComponent<SpriteRenderer>();
-        //vm.PressureIncrease = vm.PressureIncrease + pressureplus;
         //Debug.Log("vm.PressureIncrease");
+        vm = GameObject.Find("ValueManager").GetComponent<VM>();
 
     }
 
@@ -34,7 +35,8 @@ public class SmallCatController : MonoBehaviour
     public void ChangeCat(GameObject Cat){
         cat = Cat;
         spcat = cat.GetComponent<SpriteRenderer>();
-        Debug.Log(spcat.sprite.name);
+        vm.PressureIncrease = vm.PressureIncrease + pressureplus;
+        //Debug.Log(spcat.sprite.name);
         if (counter == 3){
             num = Random.Range(0, 3);
         }
@@ -49,6 +51,9 @@ public class SmallCatController : MonoBehaviour
         }
     }
     public void DestroyCat(){
+        if (counter != 0){
+            vm.PressureIncrease = vm.PressureIncrease - pressureplus;
+        }
         if (counter == 0){
             this.transform.parent.parent.GetComponent<IsGameOver>().GameOver();
         }
@@ -57,16 +62,19 @@ public class SmallCatController : MonoBehaviour
             sp[num].enabled = false;
             sp[num].gameObject.GetComponent<CircleCollider2D>().enabled = false;
             counter --;
+            dp.DeadAppear();
             num = ( num + 2) % 3;
         }
         else if (counter == 1){
             sp[num].enabled = false;
             sp[num].gameObject.GetComponent<CircleCollider2D>().enabled = false;
             counter--;
+            dp.DeadAppear();
             num = 0;
         }
         else{
             counter--;
+            dp.DeadAppear();
             switch (num){
                 case 0:
                     num = Random.Range(0,2) * 2;

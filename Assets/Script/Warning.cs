@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Warning : MonoBehaviour
 {
-    float pressure = 0;
+    public float pressure = 0;
     float pressuremax = 100;
     float colorA;
     bool warn = false;
@@ -26,7 +26,7 @@ public class Warning : MonoBehaviour
         speed = vm.FlashSpeed;
         if (pressure >= pressuremax * 0.8){
             warn = true;
-            //Debug.Log("Warning! Nearly GameOver");
+            Debug.Log("Warning! Nearly GameOver");
         }
         else if (pressure < pressuremax){
             warn = false;

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class FlashSelf : MonoBehaviour
 {
-    bool iscolora;
     SpriteRenderer sp;
-    float flashtimer = 4.5f;
+    public float flashtimer = 2.0f;
     void Start()
     {
         sp = this.GetComponent<SpriteRenderer>();
@@ -16,10 +15,10 @@ public class FlashSelf : MonoBehaviour
     void Update()
     {
         flashtimer -= Time.deltaTime;
-        float remainder = flashtimer % 0.9f;
-		sp.enabled = remainder > 0.3f;
+        float remainder = flashtimer % 0.2f;
+		sp.enabled = remainder < 0.1f;
         if (flashtimer < 0){
-            flashtimer = 4.5f;
+            flashtimer = 2.0f;
             gameObject.SetActive(false);
         }
     }

@@ -18,9 +18,15 @@ public class ElementFuel : MonoBehaviour
     VM vm;
     
     void Start(){
+       vm = GameObject.Find("ValueManager").GetComponent<VM>();
        switch(fueltype){
             case FuelType.Fuel1:
+            if (vm.CatBreed == 6){
+                value = -40;
+            }
+            else{
                 value = -20;
+            }
                 break;
             case FuelType.Fuel2:
                 value = -40;
@@ -29,13 +35,12 @@ public class ElementFuel : MonoBehaviour
                 value = -60;
                 break;
             case FuelType.Fuel4:
-                value = 0;
+                value = +50;
                 break;
             case FuelType.FuelMax:
                 value = -100;
                 break;
         } 
-        vm = GameObject.Find("ValueManager").GetComponent<VM>();
     }
     void Update()
     {
@@ -55,17 +60,21 @@ public class ElementFuel : MonoBehaviour
         if (player != null || cat != null){
             if (player == null){
                 player = other.transform.parent.parent.GetComponent<PlayerController>();
-            }   
-            if (player.pressure > 0){
-                player.ChangePressureOnce(value);
-                Destroy(gameObject);
             }
-            else{
-                Debug.Log("Pressure is already null");
-            }
+            player.ChangePressureOnce(value);
+            vm.GetComponent<AudioEffect>().Normal();
+            Destroy(gameObject);
         }
         else{
             return;
         }
+            /*if (player.pressure > 0){
+                player.ChangePressureOnce(value);
+                vm.GetComponent<AudioEffect>().Normal();
+                Destroy(gameObject);
+            }
+            else{
+                Debug.Log("Pressure is already null");
+            }*/
     }
 }

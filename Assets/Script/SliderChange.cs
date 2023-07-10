@@ -29,7 +29,7 @@ public class SliderChange : MonoBehaviour
         text1.text = slider1.value.ToString("f2");
     }
     public void ChangeSlider2(){
-        vm.MoveCost = slider1.value;
+        vm.DashCost = slider1.value;
         text1.text = slider1.value.ToString("f2");
     }
     public void ChangeSlider3(){

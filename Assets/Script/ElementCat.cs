@@ -33,6 +33,8 @@ public class ElementCat : MonoBehaviour
             player = other.transform.parent.parent.GetComponent<PlayerController>();
             }
             player.SendMessage("GetValueOfB",true);
+            vm.GetComponent<AudioEffect>().Cat();
+            GameObject.Find("ScoreManager").GetComponent<ScoreManager>().SendMessage("GetValueOfS","cat");
             player.transform.Find("SmallCat").GetComponent<SmallCatController>().ChangeCat(this.gameObject);
             Destroy(gameObject);
         }

@@ -12,12 +12,17 @@ public class LevelRandom : MonoBehaviour
     float buildtime;
     float counttime;
     int i = 6;
-    Object trial;
+    Object[] trial = new Object[3];
+    bool isbuild = true;
+    float punishtime = 0;
+    public bool ispunish = false;
     
     void Start()
     {
         vm = GameObject.Find("ValueManager").GetComponent<VM>();
-        trial = Resources.Load<GameObject>("Trial");
+        trial[0] = Resources.Load<GameObject>("Trial");
+        trial[1] = Resources.Load<GameObject>("Trial1");
+        trial[2] = Resources.Load<GameObject>("Trial2");
         Object fuel1 = Resources.Load<GameObject>("Fuel1");
         Object fuel2 = Resources.Load<GameObject>("Fuel2");
         Object fuel3 = Resources.Load<GameObject>("Fuel3");
@@ -27,16 +32,32 @@ public class LevelRandom : MonoBehaviour
         Object cat = Resources.Load<GameObject>("Cat");
         Object punish = Resources.Load<GameObject>("Punish");
         Object price = Resources.Load<GameObject>("Price");
-        Object explore = Resources.Load<GameObject>("Explores");  
-        array = new Object[] {fuel1,fuel2,fuel3,fuelmax,bonus,buff,cat,punish,price,explore};
+        Object explore = Resources.Load<GameObject>("Explores"); 
+        Object fuel4 = Resources.Load<GameObject>("Fuel4");
+        Object punishdoor = Resources.Load<GameObject>("PunishDoor");
+
+        array = new Object[] {fuel1,fuel2,fuel3,fuelmax,bonus,buff,cat,punish,price,explore,fuel4,punishdoor};
         //GameObject Fuel1 = Instantiate(fuel1) as GameObject;
-        InvokeRepeating("RandomBulidElement",0.0f,2.0f);
-        InvokeRepeating("BulidSettledElement",10.0f,10.0f);
-        InvokeRepeating("BulidTrialElement",36.0f,36.0f);
         buildtime = 0.0f;
+        BulidElement();
+    }
+    public void BulidElement(){
+        if (vm.CatBreed == 10){
+            prob[7] = 8;
+        }else{
+            prob[7] = 5;
+        }
+        InvokeRepeating("RandomBulidElement",0.0f,3.0f);
+        InvokeRepeating("BulidSettledElement",10.0f,25.0f);
+        InvokeRepeating("BulidTrialElement",20.0f,33.0f);
+        isbuild = true;
     }
 
-
+    public void BuildPause(){
+        CancelInvoke();
+        isbuild = false;
+    } 
+    
     void Update()
     {
         //buildtime = vm.RandomBulidTime;
@@ -46,9 +67,17 @@ public class LevelRandom : MonoBehaviour
             counttime = 0;
             buildtime = Random.Range(vm.RandomBulidTime - 0.25f,vm.RandomBulidTime + 0.25f);
         }
+
+        if (ispunish){
+            punishtime += Time.deltaTime;
+            BulidPunishElement();
+        }
     }
 
     void RandomBulidElement(){
+        if (!isbuild){
+            return;
+        }
         posx = Random.Range(-1.15f,1.15f);
         pref = Instantiate(array[Choose(prob)]) as GameObject;
         pref.transform.parent = this.transform;
@@ -63,9 +92,21 @@ public class LevelRandom : MonoBehaviour
     }
 
     void BulidTrialElement(){
-        pref = Instantiate(trial) as GameObject;
+        pref = Instantiate(trial[Random.Range(0, 3)]) as GameObject;
         pref.transform.parent = this.transform;
-        pref.transform.localPosition = new Vector3(0.0f,5.0f,-3.0f);
+        pref.transform.localPosition = new Vector3(0.0f,4.0f,-8.0f);
+        ispunish = true;
+    }
+
+    void BulidPunishElement(){
+        if (punishtime >= 0.8f){
+            posx = Random.Range(-1.15f,1.15f);
+            pref = Instantiate(array[11]) as GameObject;
+            pref.transform.parent = this.transform;
+            pref.transform.localPosition = new Vector3(posx,2.6f,-3.0f);
+            //Debug.Log("BulidPunish");
+            punishtime = 0;
+        }
     }
 
     
